@@ -57,6 +57,29 @@ def init_bb_imgs() -> tuple[list[pg.Surface],list[int]]: #時間とともに爆�
     return bb_imgs,bb_accs
 
 
+def get_kk_imgs(kk_img: pg.Surface) -> dict[tuple[int, int], pg.Surface]: #3飛ぶ方向に従って効果トン画像を切り替える
+    kk_imgs = {}
+    for dx, dy in [
+        (0, 0), (0, -5), (0, +5), (-5, 0), (+5, 0),
+        (-5, -5), (-5, +5), (+5, -5), (+5, +5)
+    ]:
+        if dx == 0 and dy == 0:
+            kk_imgs[(dx, dy)] = kk_img 
+        else:
+            angle = {
+                (0, -5): 90,
+                (0, +5): 270,
+                (-5, 0): 180,
+                (+5, 0): 0,
+                (-5, -5): 135,
+                (-5, +5): 225,
+                (+5, -5): 45,
+                (+5, +5): 315
+            }[(dx, dy)]
+            kk_imgs[(dx, dy)] = pg.transform.rotozoom(kk_img, angle, 1.0)
+    return kk_imgs
+
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
