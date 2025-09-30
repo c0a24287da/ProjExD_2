@@ -1,6 +1,7 @@
 import os
 import random
 import sys
+import time
 import pygame as pg
 
 
@@ -28,6 +29,23 @@ def check_bound(rct:pg.Rect) -> tuple[bool,bool]:
     return yoko,tate
 
 
+def gameover(screen: pg.Surface) -> None: #ゲームオーバー画面
+    black = pg.Surface((WIDTH,HEIGHT)) #1 黒い矩形Surfaceを作成
+    black.fill((0,0,0))
+    black.set_alpha(200) #2 黒い矩形を半透明
+    fonto = pg.font.Font(None, 120)
+    txt = fonto.render("Game Over", True, (255, 255, 255)) #Game Over文字出力
+    txt_rct = txt.get_rect(center=(WIDTH//2, HEIGHT//2))
+    k2_img = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 1.0) #3 泣いているこうかとん画像読み込み
+    k2_rct = k2_img.get_rect(center=(WIDTH//2+300, HEIGHT//2 )) #右こうかとん
+    k2_rct2 = k2_img.get_rect(center=(WIDTH//2-300, HEIGHT//2 )) #左こうかとん
+    screen.blit(black, (0, 0)) #4 Surfaceを重ねて描画
+    screen.blit(txt, txt_rct)
+    screen.blit(k2_img, k2_rct)
+    screen.blit(k2_img, k2_rct2)
+    pg.display.update() #5 画面更新後5秒停止
+    time.sleep(5) 
+
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -51,8 +69,8 @@ def main():
                 return
         screen.blit(bg_img, [0, 0]) 
         if kk_rct.colliderect(bb_rct): #こうかとん爆弾の衝突判定
-            return #ゲームオーバー
-            
+            gameover(screen) #ゲームオーバー
+            return 
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
         for key, mv in DELTA.items():
