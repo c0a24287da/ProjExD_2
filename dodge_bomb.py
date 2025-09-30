@@ -43,11 +43,11 @@ def gameover(screen: pg.Surface) -> None: #ゲームオーバー画面
     screen.blit(txt, txt_rct)
     screen.blit(k2_img, k2_rct)
     screen.blit(k2_img, k2_rct2)
-    pg.display.update() #5 画面更新後5秒停止
-    time.sleep(5) 
+    pg.display.update() 
+    time.sleep(5) #5 画面更新後5秒停止
 
 def init_bb_imgs() -> tuple[list[pg.Surface],list[int]]: #時間とともに爆弾が拡大、加速する
-    bb_imgs = []
+    bb_imgs = [] #爆弾を定義
     for r in range(1,11):
         bb_img = pg.Surface((20*r,20*r))
         pg.draw.circle(bb_img,(255,0,0),(10*r,10*r),10*r)
